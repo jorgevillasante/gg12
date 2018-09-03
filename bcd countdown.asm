@@ -4,14 +4,11 @@
     list p=18f4550			;Modelo del microcontrolador(Single-Supply ICSP disabled)
 
 
-
     CONFIG  CCP2MX = ON           ; CCP2 MUX bit (CCP2 input/output is multiplexed with RC1)
 
     CONFIG  MCLRE = ON            ; MCLR Pin Enable bi
 
     #include<p18f4550.inc>		;Llamo a la librería de nombre de los regs
-
-    
 
     ;Zona de los bits de configuración (falta)
 
@@ -29,25 +26,15 @@
 
     CONFIG  LVP = OFF             ; Single-Supply ICSP Enable bit t (MCLR pin enabled; RE3 input pin disabled)
 
-
-
-    
-
     org 0x0100
 
 datos db 0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7d, 0x07, 0x7f, 0x67
 
-
-
 cuenta EQU 0x0063
-
-    
 
     org 0x0000				;Vector de RESET
 
     goto configuro
-
-
 
 configuro:  clrf TRISB
 
@@ -58,23 +45,19 @@ configuro:  clrf TRISB
 	    movwf TBLPTRH
 
 	    movlw LOW datos
-
+	    
 	    movwf TBLPTRL
 
+cero:	    ;clrf cuenta		;Para que empiece en cero
 
-
-cero:	    clrf cuenta		;Para que empiece en cero
-
-	    movlw .10			;Para que empiece en dos
-
+	    movlw .10
+	    
 	    movwf cuenta
-
-
 
 inicio:	    decf cuenta
 
 	    goto aunno
-
+	    
 	    goto cero
 
 aunno:	    movf cuenta, W
@@ -82,18 +65,16 @@ aunno:	    movf cuenta, W
 	    movwf TBLPTRL
 
 	    TBLRD*
-
+	    
 	    movff TABLAT, LATB
 
 	    call retardo
 	    
 	    tstfsz cuenta
-	    
+
 	    goto inicio
-	    
+
 	    goto cero
-
-
 
 retardo:
 
@@ -143,6 +124,5 @@ otro3:
 
     return
 
-
-
+    
     end
